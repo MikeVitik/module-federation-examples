@@ -1,0 +1,32 @@
+{
+  "name": "nextjs-host-react-remote_remote",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {
+    "@module-federation/node": "1.0.7",
+    "@babel/plugin-proposal-class-properties": "7.18.6",
+    "@babel/core": "7.23.7",
+    "@babel/preset-react": "7.23.3",
+    "@emotion/react": "11.11.3",
+    "babel-loader": "8.2.5",
+    "concurrently": "7.6.0",
+    "html-webpack-plugin": "5.6.0",
+    "serve": "13.0.4",
+    "webpack": "5.89.0",
+    "webpack-cli": "4.10.0"
+  },
+  "scripts": {
+    "start": "pnpm build && pnpm serve",
+    "serve": "npx serve dist/ -p 8081",
+    "build": "pnpm build:client && pnpm build:server",
+    "build:client": "pnpm clean:client && webpack --mode production --config config/webpack.client.js",
+    "build:server": "pnpm clean:server && webpack --mode production --config config/webpack.server.js",
+    "clean:client": "rm -rf dist/client",
+    "clean:server": "rm -rf dist/server"
+  }
+}
