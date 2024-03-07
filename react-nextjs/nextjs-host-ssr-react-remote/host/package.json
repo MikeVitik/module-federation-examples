@@ -11,7 +11,7 @@
     "install:last": "npm install @module-federation/nextjs-mf@8.1.10"
   },
   "dependencies": {
-    "@module-federation/nextjs-mf": "8.1.10",
+    "@module-federation/nextjs-mf": "^8.1.10",
     "next": "12.3.4",
     "next-transpile-modules": "9.1.0",
     "react": "18.2.0",
