@@ -11,6 +11,7 @@ module.exports = {
       // './react': 'react',
       // './react-dom': 'react-dom',
       './Nav': './src/components/Nav',
+      './Counter': './src/components/Counter'
     },
     shared: {},
   }),
@@ -20,6 +21,7 @@ module.exports = {
       filename: 'remoteEntry.js',
       exposes: {
         './Nav': './src/components/Nav',
+        './Counter': './src/components/Counter'
       },
       remotes: {},
       library: { type: 'commonjs-module' },

@@ -8,7 +8,7 @@
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
-    "@module-federation/node": "2.0.14",
+    "@module-federation/node": "2.0.15",
     "@babel/plugin-proposal-class-properties": "7.18.6",
     "@babel/core": "7.23.7",
     "@babel/preset-react": "7.23.3",
@@ -24,8 +24,8 @@
     "start": "pnpm build && pnpm serve",
     "serve": "npx serve dist/ -p 8081",
     "build": "pnpm build:client && pnpm build:server",
-    "build:client": "pnpm clean:client && webpack --mode production --config config/webpack.client.js",
-    "build:server": "pnpm clean:server && webpack --mode production --config config/webpack.server.js",
+    "build:client": "pnpm clean:client && webpack --mode development --config config/webpack.client.js",
+    "build:server": "pnpm clean:server && webpack --mode development --config config/webpack.server.js",
     "clean:client": "rm -rf dist/client",
     "clean:server": "rm -rf dist/server"
   }
