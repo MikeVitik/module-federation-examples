@@ -11,6 +11,7 @@ const webpackConfig = {
     path: path.resolve(__dirname, '../dist/server'),
     filename: '[name].js',
     libraryTarget: 'commonjs-module',
+    publicPath: 'http://localhost:8081/server/'
   },
   target: false,
   name: 'server',

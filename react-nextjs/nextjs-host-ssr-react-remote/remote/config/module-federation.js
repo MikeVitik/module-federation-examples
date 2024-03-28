@@ -24,7 +24,7 @@ module.exports = {
         './Counter': './src/components/Counter'
       },
       remotes: {},
-      library: { type: 'commonjs-module' },
+      library: { type: 'commonjs-module', name: 'Node-remote' },
     }),
     new StreamingTargetPlugin({
       name: 'remote',
