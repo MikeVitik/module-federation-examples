@@ -1,14 +1,58 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import CounterRemoteComponent from 'remote/Counter';
-import ReactRemoteComponent from 'remote/Nav';
+import { createRef, memo, useMemo, useState } from 'react';
+// import CounterRemoteComponent from 'remote/Counter';
+// import ReactRemoteComponent from 'remote/Nav';
+import * as InjectableComponent from 'remote/injectableComponent';
 
 import styles from '../styles/Home.module.css';
 // const ReactRemoteComponent = dynamic(() => import('remote/Nav'), {
 //    ssr: false,
 //  });
 
+function useRemoteComponent({ data, elementId }) {
+  const isRenderedInServer = createRef(false);
+  let remoteComponentRoot = null;
+  const elementRef = el => {
+    if (el !== null) {
+      remoteComponentRoot = InjectableComponent.inject(isRenderedInServer.current, el, data);
+    } else if (remoteComponentRoot) {
+      console.log('unmount');
+      remoteComponentRoot.unmount?.();
+    }
+  };
+  // useMemo for prevent re-creating remote container component
+  return useMemo(
+    () =>
+      // use memo for prevent re-renter and update DOM of remote component
+      // because container component should render only ones during hydration
+      memo(() => {
+        if (!__IS_SERVER__) {
+          const element = document.getElementById(elementId);
+          isRenderedInServer.current = !!element;
+          return (
+            <div
+              id={elementId}
+              ref={elementRef}
+              dangerouslySetInnerHTML={{ __html: element?.innerHTML }}
+            />
+          );
+        } else {
+          return (
+            <div
+              id={elementId}
+              ref={elementRef}
+              dangerouslySetInnerHTML={{ __html: InjectableComponent.renderToString(data) }}
+            />
+          );
+        }
+      }),
+    [],
+  );
+}
 export default function Home() {
+  const CounterRemoteComponent = useRemoteComponent({ data: 'test', elementId: 'remote-counter' });
+  const [text, setText] = useState('text');
   return (
     <div className={styles.container}>
       <Head>
@@ -22,11 +66,11 @@ export default function Home() {
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
-        <p className={styles.description}>
-          Get started by editing <code className={styles.code}>pages/index.js</code>
+        <p className={styles.description} onClick={() => setText(text + 'a')}>
+          Get started by editing <code className={styles.code}>pages/index.js {text}</code>
         </p>
-        <CounterRemoteComponent/>
-        <ReactRemoteComponent />
+        <CounterRemoteComponent />
+        {/* <ReactRemoteComponent /> */}
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card} data-e2e="TEXTED_LINK_CARD">
             <h2>Documentation &rarr;</h2>
@@ -38,7 +82,11 @@ export default function Home() {
             <p>Learn about Next.js in an interactive course with quizzes!</p>
           </a>
 
-          <a href="https://github.com/vercel/next.js/tree/canary/examples" className={styles.card} data-e2e="TEXTED_LINK_CARD">
+          <a
+            href="https://github.com/vercel/next.js/tree/canary/examples"
+            className={styles.card}
+            data-e2e="TEXTED_LINK_CARD"
+          >
             <h2>Examples &rarr;</h2>
             <p>Discover and deploy boilerplate example Next.js projects.</p>
           </a>
